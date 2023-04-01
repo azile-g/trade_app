@@ -400,7 +400,7 @@ class MACD(IndicatorMixin):
         for i in range(len(intersections)-pat):
             index = intersections[i]
             true_trade= None
-            if macd_df['Close'][index] < macd_df['Close'][index+pat]:
+            if macd_df['Close'][index] <= macd_df['Close'][index+pat]:
                 true_trade = 'buy'
             elif macd_df['Close'][index] > macd_df['Close'][index+pat]:
                 true_trade = 'sell'
