@@ -44,7 +44,10 @@ buy_trade_count = ret_rsi_df['Buy Signal'].count()
 sell_trade_count = ret_rsi_df['Sell Signal'].count()
 #average_profit = ((ret_rsi_df['Strategy'].tolist()[-1] / ret_rsi_df['Strategy'].tolist()[15])**(1/trade_count))-1
 total_days = ret_rsi_df['Long Tomorrow'].count()
-average_days = int(total_days / buy_trade_count)
+if buy_trade_count <= 0: 
+    average_days = 0
+else: 
+    average_days = int(total_days / buy_trade_count)
 buy_df = ret_rsi_df[["Date", "Buy Signal"]].dropna()
 sell_df = ret_rsi_df[["Date", "Sell Signal"]].dropna()
 try:
@@ -54,12 +57,16 @@ except:
 #Write results to streamlit
 rsi_tab.write(buy_df)
 rsi_tab.write(sell_df)
+if len(profits) == 0: 
+    avrg_profit = 0
+else:
+    avrg_profit = (sum(profits)/len(profits))*100
 rsi_tab.markdown(
     f"""
     - 🤙 Strategy yielded **{buy_trade_count} buy trades** and **{sell_trade_count} sell trades**
     - ⏳ Average trade lasted **{average_days} days per trade**
     - 💵 Our profits per trade was **{profits}**
-    - 💵 Our average profit was **{(sum(profits)/len(profits))*100}%**
+    - 💵 Our average profit was **{avrg_profit}%**
     """)
 
 #MACD INDICATOR
